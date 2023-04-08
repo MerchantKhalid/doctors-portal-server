@@ -42,7 +42,7 @@ async function run(){
     const bookingsCollection= client.db('doctorsPortalLisbon').collection('bookingsAll')
     const usersCollection= client.db('doctorsPortalLisbon').collection('users')
     const doctorsCollection= client.db('doctorsPortalLisbon').collection('doctors')
-    const paymentCollection= client.db('doctorsPortalLisbon').collection('payment')
+    const paymentsCollection= client.db('doctorsPortalLisbon').collection('payments')
 
     // verify admin
     // use verify admin after verify jwt
@@ -217,6 +217,21 @@ async function run(){
       const id=req.params.id;
       const filter= {_id:new ObjectId(id)}
       const result= await doctorsCollection.deleteOne(filter);
+      res.send(result)
+    })
+
+    app.post('/payments',async(req,res)=>{
+      const payment= req.body;
+      const result= await paymentsCollection.insertOne(payment)
+      const id=payment.bookingId
+      const filter={_id: new ObjectId(id)}
+      const updatedDoc={
+        $set:{
+          paid:true,
+          transactionId:payment.transactionId
+        }
+      }
+      const updatedResult= await bookingsCollection.updateOne(filter,updatedDoc)
       res.send(result)
     })
 
