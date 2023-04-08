@@ -42,6 +42,7 @@ async function run(){
     const bookingsCollection= client.db('doctorsPortalLisbon').collection('bookingsAll')
     const usersCollection= client.db('doctorsPortalLisbon').collection('users')
     const doctorsCollection= client.db('doctorsPortalLisbon').collection('doctors')
+    const paymentCollection= client.db('doctorsPortalLisbon').collection('payment')
 
     // verify admin
     // use verify admin after verify jwt
